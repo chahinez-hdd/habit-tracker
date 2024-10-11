@@ -12,22 +12,25 @@ export const getHabits = async (req, res) => {
 };
 
 export const createHabit = async (req, res) => {
-	const habit = req.body; // user will send this data
-
-	if (!habit.name || !habit.price || !habit.image) {
-		return res.status(400).json({ success: false, message: "Please provide all fields" });
+	const habit = req.body; // Log the received habit
+	console.log("Received habit:", habit);
+  
+	if (!habit.name || !habit.description) {
+	  return res.status(400).json({ success: false, message: "Please provide all fields" });
 	}
-
+  
 	const newHabit = new Habit(habit);
-
+  
 	try {
-		await newHabit.save();
-		res.status(201).json({ success: true, data: newhabit });
+	  await newHabit.save();
+	  console.log("Habit saved:", newHabit);
+	  res.status(201).json({ success: true, data: newHabit });
 	} catch (error) {
-		console.error("Error in Create habit:", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
+	  console.error("Error in Create habit:", error.message);
+	  res.status(500).json({ success: false, message: "Server Error" });
 	}
-};
+  };
+  
 
 export const updateHabit = async (req, res) => {
 	const { id } = req.params;
