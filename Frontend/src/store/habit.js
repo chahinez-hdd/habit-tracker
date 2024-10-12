@@ -52,4 +52,42 @@ export const useHabitStore = create((set) => ({
 
 		return { success: true, message: data.message };
 	},
+	addCheckDate: async (pid, clickedTime) => {
+		try {
+			// Fetch the habit by id
+			const res = await fetch(`/api/habits/${pid}`);
+			const data = await res.json();
+	
+			if (!data.success) {
+				console.error('Error fetching habit:', data.message);
+				return; // Exit if fetching the habit fails
+			}
+	
+			const habit = data.data;
+			console.log('Fetched habit:', habit);
+	
+			// Push the new clickedTime into the checkedTime array
+			habit.checkedTime.push(clickedTime);
+			console.log('Updated checkedTime:', habit.checkedTime);
+	
+			// Send the updated habit with the new checkedTime array to the server
+			const updateRes = await fetch(`/api/habits/${pid}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(habit),
+			});
+	
+			const updateData = await updateRes.json();
+			if (!updateData.success) {
+				console.error('Error updating habit check date:', updateData.message);
+			} else {
+				console.log('Check date added successfully:', updateData);
+			}
+		} catch (error) {
+			console.error('Error:', error.message);
+		}
+	}
+	
 }));

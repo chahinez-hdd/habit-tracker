@@ -10,6 +10,11 @@ const habitSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		checkedTime:[
+			{
+				type: Date,
+			},
+		],
 	},
 	{
 		timestamps: true, // createdAt, updatedAt

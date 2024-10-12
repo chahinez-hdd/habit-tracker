@@ -31,7 +31,7 @@ const HabitCard = ({ habit }) => {
 	const textColor = "grey";
 	const bg = "#E4B1F0";
 
-	const { deleteHabit, updateHabit} = useHabitStore();
+	const { deleteHabit, updateHabit, addCheckDate} = useHabitStore();
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -78,6 +78,16 @@ const HabitCard = ({ habit }) => {
 		}
 	};
 
+	const handleClick= async (pid) =>{
+		const clickedTime = new Date().toISOString();
+		try{
+			addCheckDate(pid, clickedTime);
+		}
+		catch(error){
+			console.log(error.message)
+		}
+	}
+
 	return (
 		<Box
 		boxShadow="0px 5px 20px rgba(0, 0, 0, 0.3)"
@@ -101,7 +111,7 @@ const HabitCard = ({ habit }) => {
 			</VStack>
 
 			<HStack spacing={4}>
-			<Checkbox colorScheme='green' iconSize="2rem" bgColor='#FFE1FF' borderRadius={50} sx={{
+			<Checkbox onClick={handleClick}colorScheme='green' iconSize="2rem" bgColor='#FFE1FF' borderRadius={50} sx={{
 				// Custom styles for increasing the size with numbers
 				"& > span:first-of-type": {
 				  width: "50px",  // Set the checkbox width
